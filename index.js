@@ -48,11 +48,12 @@ function convertToBin(population) {
       fullString += string
     }
     populationFinal.push({ binary: fullString, maxBits: maxLengthOfBits })
-    console.log(populationFinal)
+
     bits = []
+    decimalNumbers = []
     fullString = ''
   }
-
+  console.log(populationFinal)
   return population
 }
 
