@@ -1,3 +1,4 @@
+//Atividade 1
 const cromLimite = [
     [14, 21],
     [1, 4],
@@ -23,6 +24,28 @@ function novaPopulacao(nInd, cromLimite) {
     return population
 }
 
+//Extra 
+function reordenarPopulacao(populacao) {
+    const numLinhas = populacao.length;
+    const numColunas = populacao[0].length;
+
+    const novaPopulacao = [];
+
+    for (let i = 0; i < numColunas; i++) {
+        novaPopulacao.push([]);
+    }
+
+    for (let i = 0; i < numLinhas; i++) {
+        for (let j = 0; j < numColunas; j++) {
+            novaPopulacao[j].push(populacao[i][j]);
+        }
+    }
+
+    return novaPopulacao;
+}
+
+//Atividade 2
+// Primeira Parte 
 function convertToBin(population) {
     let fullString = ''
     let bits = []
@@ -57,7 +80,7 @@ function convertToBin(population) {
     return populationFinal
 }
 
-
+// Segunda Parte
 function decodeBinaries(populationFinal) {
     let result = [];
     const nCromossomos = populationFinal.length;
@@ -76,11 +99,41 @@ function decodeBinaries(populationFinal) {
     return result;
 }
 
+//Atividade 3
+// Primeira Parte 
+function fitness(populacaoOrdenada) {
+    let Nind = populacaoOrdenada.length;
+    let fitness = [];
 
+    for (let i = 0; i < Nind; i++) {
+        fitness[i] = funcaoObjetiva(populacaoOrdenada[i]);
+    }
+
+    return fitness;
+}
+
+function funcaoObjetiva(x) {
+    let Ncrom = x.length;
+    let objFunction = 10;
+
+    for (let j = 0; j < Ncrom; j++) {
+        let value = x[j];
+        objFunction = objFunction - value * value;
+    }
+
+    return objFunction;
+} 
+
+//Segunda Parte
+
+
+
+//Resultados
 let populacao = novaPopulacao(nInd, cromLimite)
-console.log(populacao)
-
-console.log(convertToBin(populacao));
 let populationFinal = convertToBin(populacao)
+let ordenacao = reordenarPopulacao(populacao);
 
+console.log(populacao)
+console.log(convertToBin(populacao));
 console.log(decodeBinaries(populationFinal));
+console.log(fitness(ordenacao));
