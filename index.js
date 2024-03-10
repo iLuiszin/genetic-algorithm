@@ -103,17 +103,16 @@ function decodeBinaries(populationFinal) {
 //Atividade 3
 // Primeira Parte
 function fitness(populacaoOrdenada) {
-  let Nind = populacaoOrdenada.length
-  let fitness = []
+  const newPopulation = []
 
-  for (let i = 0; i < Nind; i++) {
-    populacaoOrdenada[i] = {
+  for (let i = 0; i < populacaoOrdenada.length; i++) {
+    newPopulation.push({
       populacao: populacaoOrdenada[i],
       aptidao: funcaoObjetiva(populacaoOrdenada[i]),
-    }
+    })
   }
 
-  return fitness
+  return newPopulation
 }
 
 function funcaoObjetiva(x) {
@@ -158,6 +157,6 @@ function metodoDaRoleta(populacao) {
 let populacao = novaPopulacao(nInd, cromLimite)
 let populationFinal = convertToBin(populacao)
 let ordenacao = reordenarPopulacao(populacao)
-const valoresDeAptidao = fitness(ordenacao)
-const selecionado = metodoDaRoleta(ordenacao, valoresDeAptidao)
+const populacaoFitness = fitness(ordenacao)
+const selecionado = metodoDaRoleta(populacaoFitness)
 console.log(`selecionado: ${JSON.stringify(selecionado)}`)
