@@ -116,11 +116,11 @@ function fitness(populacaoOrdenada) {
 }
 
 function funcaoObjetiva(x) {
-  let Ncrom = x.length
+  const Ncrom = x.length
   let objFunction = 10
 
   for (let j = 0; j < Ncrom; j++) {
-    let value = x[j]
+    const value = x[j]
     objFunction = objFunction - value * value
   }
 
@@ -138,14 +138,14 @@ function metodoDaRoleta(populacao) {
     populacao[i].probabilidade = populacao[i].aptidao / somaAptidao
   }
 
-  let faixasProbabilidade = []
+  const faixasProbabilidade = []
   let faixaAcumulada = 0
   for (let i = 0; i < populacao.length; i++) {
     faixaAcumulada += populacao[i].probabilidade
     faixasProbabilidade.push(faixaAcumulada)
   }
 
-  let sorteio = Math.random()
+  const sorteio = Math.random()
   for (let i = 0; i < faixasProbabilidade.length; i++) {
     if (sorteio <= faixasProbabilidade[i]) {
       return populacao[i]
@@ -154,9 +154,13 @@ function metodoDaRoleta(populacao) {
 }
 
 //Resultados
-let populacao = novaPopulacao(nInd, cromLimite)
-let populationFinal = convertToBin(populacao)
-let ordenacao = reordenarPopulacao(populacao)
+const populacao = novaPopulacao(nInd, cromLimite)
+const populationFinal = convertToBin(populacao)
+const ordenacao = reordenarPopulacao(populacao)
 const populacaoFitness = fitness(ordenacao)
 const selecionado = metodoDaRoleta(populacaoFitness)
+console.log(populacao)
+console.log(convertToBin(populacao))
+console.log(decodeBinaries(populationFinal))
+console.log(fitness(ordenacao))
 console.log(`selecionado: ${JSON.stringify(selecionado)}`)
