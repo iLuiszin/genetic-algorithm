@@ -7,12 +7,14 @@ const cromLimite = [
 ]
 const nInd = 5
 const nCrom = 4
+
 let individual = []
 let population = []
 function novaPopulacao(nInd, cromLimite) {
   let nCromossomos = cromLimite.length
-  for (let i = 0; i < nCromossomos; i++) {
-    for (let j = 0; j < nInd; j++) {
+
+  for (let j = 0; j < nInd; j++) {
+    for (let i = 0; i < nCromossomos; i++) {
       let inf = cromLimite[i][0]
       let sup = cromLimite[i][1]
       individual.push(Math.floor(Math.random() * (sup - inf + 1) + inf))
@@ -24,25 +26,6 @@ function novaPopulacao(nInd, cromLimite) {
   return population
 }
 
-//Extra
-function reordenarPopulacao(populacao) {
-  const numLinhas = populacao.length
-  const numColunas = populacao[0].length
-
-  const novaPopulacao = []
-
-  for (let i = 0; i < numColunas; i++) {
-    novaPopulacao.push([])
-  }
-
-  for (let i = 0; i < numLinhas; i++) {
-    for (let j = 0; j < numColunas; j++) {
-      novaPopulacao[j].push(populacao[i][j])
-    }
-  }
-
-  return novaPopulacao
-}
 
 //Atividade 2
 // Primeira Parte
@@ -156,11 +139,10 @@ function metodoDaRoleta(populacao) {
 //Resultados
 const populacao = novaPopulacao(nInd, cromLimite)
 const populationFinal = convertToBin(populacao)
-const ordenacao = reordenarPopulacao(populacao)
-const populacaoFitness = fitness(ordenacao)
+const populacaoFitness = fitness(populacao)
 const selecionado = metodoDaRoleta(populacaoFitness)
 console.log(populacao)
-console.log(convertToBin(populacao))
-console.log(decodeBinaries(populationFinal))
-console.log(fitness(ordenacao))
-console.log(`selecionado: ${JSON.stringify(selecionado)}`)
+//console.log(convertToBin(populacao))
+//console.log(decodeBinaries(populationFinal))
+//console.log(fitness(ordenacao))
+//console.log(`selecionado: ${JSON.stringify(selecionado)}`)
