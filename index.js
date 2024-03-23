@@ -179,8 +179,6 @@ function mutate(crossArray, pmut) {
     if (Math.random() < pmut) {
       const mp = Math.floor(Math.random() * nLinhas - 1) + 1
 
-      console.log(crossArray[i][mp])
-
       if (crossArray[i][mp] === '1') {
         newArray.push(crossArray[i].replace('1', '0'))
       } else {
