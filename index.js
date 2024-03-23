@@ -151,16 +151,60 @@ function metodoDaRoleta(populacao) {
       return populacao[i]
     }
   }
+
+  return populacao[populacao.length - 1]
+}
+
+function cross(binpop, selected) {
+  selected = selected.populacao.map((el) => el.toString(2))
+  selected = selected.join('')
+
+  const cp = Math.floor(Math.random() * binpop[0].binary.length)
+
+  const randomIndex = Math.floor(Math.random() * binpop.length)
+  const randomIndividual = binpop[randomIndex]
+
+  const filhoUm = selected.slice(0, cp) + randomIndividual.binary.slice(cp)
+  const filhoDois = randomIndividual.binary.slice(0, cp) + selected.slice(cp)
+
+  return [filhoUm, filhoDois]
+}
+
+function mutate(crossArray, pmut) {
+  const nInd = crossArray.length
+  const nLinhas = crossArray[0].length
+  const newArray = []
+
+  for (let i = 0; i < nInd; i++) {
+    if (Math.random() < pmut) {
+      const mp = Math.floor(Math.random() * nLinhas - 1) + 1
+
+      console.log(crossArray[i][mp])
+
+      if (crossArray[i][mp] === '1') {
+        newArray.push(crossArray[i].replace('1', '0'))
+      } else {
+        newArray.push(crossArray[i].replace('0', '1'))
+      }
+    }
+  }
+
+  return newArray.length === 0 ? crossArray : newArray
 }
 
 //Resultados
 const populacao = novaPopulacao(nInd, cromLimite)
-const populationFinal = convertToBin(populacao)
-const ordenacao = reordenarPopulacao(populacao)
-const populacaoFitness = fitness(ordenacao)
+const populacaoOrdenada = reordenarPopulacao(populacao)
+const populationBinaria = convertToBin(populacaoOrdenada)
+const populacaoFitness = fitness(populacaoOrdenada)
 const selecionado = metodoDaRoleta(populacaoFitness)
+const crossArray = cross(populationBinaria, selecionado)
+const populacaoMutada = mutate(crossArray, 0.01)
+
 console.log(populacao)
 console.log(convertToBin(populacao))
-console.log(decodeBinaries(populationFinal))
-console.log(fitness(ordenacao))
+console.log(decodeBinaries(populationBinaria))
+console.log(fitness(populacaoOrdenada))
 console.log(`selecionado: ${JSON.stringify(selecionado)}`)
+console.log(`cross: [${crossArray}]`)
+console.log(`populacaoMutada: [${populacaoMutada}]`)
