@@ -3,9 +3,9 @@ const fs = require('fs');
 // ETAPA 1 - GERAR POPULAÇÃO
 
 // Definir os parâmetros do problema
-const num_cromossomos = 4;
-const num_alunos = 5;
-const num_grupos = 2;
+const num_cromossomos = 100;
+const num_alunos = 100;
+const num_grupos = 5;
 
 function copiarArrayPorValor(arr) {
     return JSON.parse(JSON.stringify(arr));
@@ -25,13 +25,14 @@ const cromossomos = [];
 
 
 let alunos = []
+
 for (let i = 0; i < num_alunos; i++) {
     const aluno = {
         "Identificação": `Aluno_${i + 1}`,
         "Grupo": null,
-        "Idade": Math.floor(Math.random() * (75 - 17 + 1)) + 17,
+        "Idade": Math.floor(Math.random() * (60 - 10 + 1)) + 10,
         "Disciplina": Math.floor(Math.random() * 4) + 1,
-        "Tempo de Acesso": Math.floor(Math.random() * 181),
+        "Tempo de Acesso": Math.floor(Math.random() * 90),
         "Hora de Acesso": Math.floor(Math.random() * 24)
     };
     alunos.push(aluno);
@@ -345,19 +346,74 @@ fitnessPai.push(...fitnessFilhos)
 
 fitenessPaiSorted = fitnessPai.sort((a, b) => b.fitness - a.fitness)
 
-theBestOnes = fitenessPaiSorted.slice(0, num_cromossomos)
+ theBestOnes = fitenessPaiSorted.slice(0, num_cromossomos)
 
 let theNewPopulation = []
 
 theBestOnes.forEach(
-    item => {
+    (item, index) => {
         if (!item.filho) {
             theNewPopulation.push(cromossomoss[item.cromossomo])
         } else {
             theNewPopulation.push(filhos[item.cromossomo])
         }
+        item.cromossomo = index
     }
 )
+
+function generateBestPopulation(teste) {
+    let bestPopulation = [];
+    let counter = 0;
+
+    while (counter < 100) {
+        let media = calcularMediaCaracteristicas(teste);
+        let euclideanDistance = calculateEuclDistance(teste, media);
+        let studentsSum = soma(euclideanDistance);
+        let groupsSum = somaGruposs(studentsSum);
+        let fitness = applyFitness(groupsSum);
+        let mask = generateMask(num_alunos);
+        let chosenOne = metodoDaRoleta(fitness);
+        let chosenTwo = metodoDaRoleta(fitness);
+        let children = crossover(teste[chosenOne], teste[chosenTwo], mask);
+        mutation(children, 0.03);
+        let childrenMedia = calcularMediaCaracteristicas(children);
+        let childrenEuclideanDistance = calculateEuclDistance(children, childrenMedia);
+        let childrenStudentsSum = soma(childrenEuclideanDistance);
+        let childrenGroupsSum = somaGruposs(childrenStudentsSum);
+        let childrenFitness = applyFitness(childrenGroupsSum);
+
+        fitnessFilhos.forEach(item => {
+            item.filho = true
+        })
+
+        fitnessPai.push(...childrenFitness);
+        fitenessPaiSorted = fitnessPai.sort((a, b) => b.fitness - a.fitness)
+        theBestOnes = fitenessPaiSorted.slice(0, num_cromossomos)
+        let theNewPopulation = []
+        theBestOnes.forEach(
+            (item, index) => {
+                if (!item.filho) {
+                    theNewPopulation.push(cromossomoss[item.cromossomo])
+                } else {
+                    theNewPopulation.push(filhos[item.cromossomo])
+                }
+                item.cromossomo = index
+            }
+        )
+        if (counter === 2) {
+            console.log(theNewPopulation[0])
+            bestPopulation = theBestOnes[0].fitness;
+        }
+        counter++;
+    }
+
+    return bestPopulation
+}
+
+let finalAnswer = generateBestPopulation(theNewPopulation);
+console.log(finalAnswer);
+
+
 
 
 
